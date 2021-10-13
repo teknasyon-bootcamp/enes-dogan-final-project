@@ -80,3 +80,12 @@ In blade
  @include('forms.save')  
 </form>
 ```
+
+## Screenshots
+![home](/images/home.png)
+![news-detail](/images/news-detail.png)
+![profile](/images/profile.png)
+![activities](/images/activities.png)
+![admin-panel](/images/admin-panel.png)
+![news-list](/images/news-list.png)
+![create-news](/images/create-news.png)
