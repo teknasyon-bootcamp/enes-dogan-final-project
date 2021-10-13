@@ -1,0 +1,26 @@
+mysql:
+  image: mysql:latest
+  volumes_from:
+    - data
+  environment:
+    MYSQL_ROOT_PASSWORD: password
+    MYSQL_DATABASE: project
+    MYSQL_USER: admin
+    MYSQL_PASSWORD: password
+
+  ports:
+    - 8081:3306
+data:
+  image: mysql:latest
+  volumes:
+    - /var/lib/mysql
+  command: "true"
+
+#phpmyadmin:
+#  image: phpmyadmin/phpmyadmin
+#  ports:
+#    - 8080:80
+#  links:
+#    - mysql
+#  environment:
+#    PMA_HOST: mysql
