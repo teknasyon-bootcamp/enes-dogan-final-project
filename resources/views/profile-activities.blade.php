@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('content')
-    <h1>My Comments</h1>
+    <h1>My Activities</h1>
     <table class="table table-striped">
         <tr>
             <th>Activity</th>

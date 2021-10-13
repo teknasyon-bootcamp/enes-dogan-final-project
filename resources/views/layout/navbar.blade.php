@@ -17,7 +17,6 @@
                     <a class="btn btn-sm btn-outline-secondary" href="{{route('signout')}}">Sign out</a>
                     <a class="btn btn-sm btn-outline-secondary ms-1" href="{{route('profile')}}">Profile</a>
 
-                    {{--todo is admin --}}
                     @hasanyrole('admin|moderator|editor')
                     <a class="btn btn-sm btn-outline-secondary ms-1" href="{{route('admin.panel')}}">Admin Panel</a>
                     @endrole
