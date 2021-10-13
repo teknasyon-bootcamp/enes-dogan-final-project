@@ -4,7 +4,7 @@
             <div class="col-4 pt-1">
             </div>
             <div class="col-4 text-center">
-                <a class="blog-header-logo text-dark" href="/">Large</a>
+                <a class="blog-header-logo text-dark" href="/">News Report</a>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 {{--                <a class="link-secondary" href="#" aria-label="Search">--}}
@@ -14,8 +14,13 @@
                     <a class="btn btn-sm btn-outline-secondary" href="{{route('register')}}">Sign up</a>
                     <a class="btn btn-sm btn-outline-secondary ms-2" href="{{route('login')}}">Sign in</a>
                 @else
-                    <a class="btn btn-sm btn-outline-secondary" href="{{route('signout')}}">Sign out {{auth()->user()->name}}</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{{route('signout')}}">Sign out</a>
+                    <a class="btn btn-sm btn-outline-secondary ms-1" href="{{route('profile')}}">Profile</a>
 
+                    {{--todo is admin --}}
+                    @if(true)
+                        <a class="btn btn-sm btn-outline-secondary ms-1" href="{{route('admin.panel')}}">Admin Panel</a>
+                    @endif
                 @endif
 
             </div>

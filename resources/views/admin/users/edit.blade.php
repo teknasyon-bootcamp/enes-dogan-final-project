@@ -6,7 +6,23 @@
         @csrf
         @method('put')
         @include('forms.generic')
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Role</label>
+            <div class="col-sm-10">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>Select a role</option>
+                    @foreach(\Spatie\Permission\Models\Role::all() as $role)
+                        <option @if($model->getRoleNames()[0] === $role->name) selected @endif value="{{$role->id}}">{{$role->name}}</option>
+                    @endforeach
+
+                </select>
+            </div>
+        </div>
+
         @include('forms.save')
+
+
     </form>
 
 @endsection

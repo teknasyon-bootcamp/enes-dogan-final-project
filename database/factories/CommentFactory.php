@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
+use App\Models\Comment;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class NewsFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = News::class;
+    protected $model = Comment::class;
 
     /**
      * Define the model's default state.
@@ -25,11 +25,10 @@ class NewsFactory extends Factory
     {
         $date = $this->faker->dateTimeBetween('-1 years', 'now');
         return [
+            "body" => $this->faker->text(),
             'user_id' => User::inRandomOrder()->first()->id,
-            'category_id' => Category::inRandomOrder()->first()->id,
-            'title' => $this->faker->realText('30'),
-            'body' => $this->faker->text(),
-            'is_draft' => $this->faker->boolean(20),
+            'news_id' => News::inRandomOrder()->first()->id,
+            'is_anonymous' => $this->faker->boolean(20),
             'created_at' => $date,
             'updated_at' => $date,
         ];

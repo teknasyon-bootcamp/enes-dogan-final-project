@@ -10,7 +10,7 @@ class NewsController extends Controller
     public function detail(int $newsId)
     {
 
-        $new = News::with('comments.user')->findOrFail([$newsId]);
+        $new = News::with('comments.user')->findOrFail($newsId);
         return view('news-detail',[
             "new" => $new
         ]);

@@ -41,8 +41,11 @@ class ProfileController extends Controller
         return redirect()->route('profile')->with('message', 'Profile updated');
     }
 
-    public function deletereq()
+    public function deleteRequest()
     {
+        auth()->user()->delete_request = !auth()->user()->delete_request;
+        auth()->user()->save();
 
+        return redirect()->back();
     }
 }

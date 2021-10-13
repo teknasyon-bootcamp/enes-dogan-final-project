@@ -34,7 +34,6 @@ class CustomAuthController extends Controller
     }
 
 
-
     public function registration()
     {
         return view('auth.registration');
@@ -51,16 +50,18 @@ class CustomAuthController extends Controller
 
         $data = $request->all();
 
-        User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password'])
         ]);
-
+        $user->assignRole('user');
+        Auth::setUser($user);
         return redirect()->route('feed');
     }
 
-    public function signOut() {
+    public function signOut()
+    {
         Session::flush();
         Auth::logout();
 

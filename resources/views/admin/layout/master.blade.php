@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.88.1">
-    <title>Sidebars</title>
+    <title>News Admin Panel</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sidebars/">
 
@@ -34,6 +34,7 @@
     <!-- Custom styles for this template -->
     <link href="/assets/css/sidebars.css" rel="stylesheet">
     <link href="/assets/css/all.min.css" rel="stylesheet">
+    @yield('styles')
 </head>
 <body>
 
@@ -120,11 +121,11 @@
 
 
     <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+        <a href="{{route('admin.panel')}}" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
             <svg class="bi me-2" width="30" height="24">
                 <use xlink:href="#bootstrap"></use>
             </svg>
-            <span class="fs-5 fw-semibold">Collapsible</span>
+            <span class="fs-5 fw-semibold">News Admin Panel</span>
         </a>
         <ul class="list-unstyled ps-0">
             <li class="mb-1">
@@ -147,6 +148,7 @@
                 <div class="collapse show" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="{{route('admin.users.index')}}" class="link-dark rounded">Manage Users</a></li>
+                        <li><a href="{{route('admin.users.deleteRequest')}}" class="link-dark rounded">Delete Requested Users</a></li>
                     </ul>
                 </div>
             </li>
@@ -201,6 +203,7 @@
 
 <script src="/assets/js/sidebars.js"></script>
 
+@yield('scripts')
 
 </body>
 </html>

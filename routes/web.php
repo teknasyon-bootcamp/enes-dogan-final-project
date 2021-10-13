@@ -40,6 +40,7 @@ Route::get('/signout', [CustomAuthController::class, 'signOut'])->name('signout'
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/edit', [ProfileController::class, 'update']);
+Route::get('/profile/delete-request', [ProfileController::class, 'deleteRequest'])->name('profile.deleteRequest');
 
 
 Route::prefix('admin')->as('admin.')->group(function () {
@@ -47,6 +48,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('/', [AdminPanelController::class, 'index'])->name('panel');
 
 
+    Route::get('/users/delete-request', [AdminUserController::class, 'deleteRequestedUsersList'])->name('users.deleteRequest');
     Route::resource('users', AdminUserController::class);
     Route::get('/news/drafts', [AdminNewsController::class, 'drafts'])->name('news.drafts');
     Route::resource('news', AdminNewsController::class);

@@ -67,7 +67,9 @@ class AdminUserController extends Controller
     {
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        if(!$request->password){
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
         return redirect()->route('admin.users.index')->with('message', 'Successfully updated.');
     }
@@ -81,5 +83,11 @@ class AdminUserController extends Controller
     {
         $user->delete();
         return redirect()->route('admin.users.index')->with('message', 'Successfully deleted.');
+    }
+
+    public function deleteRequestedUsersList(){
+        return view('admin.users.delete-requested-users', [
+            "users" => User::where('delete_request', true)->paginate(10)
+        ]);
     }
 }

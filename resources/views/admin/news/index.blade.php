@@ -6,9 +6,10 @@
     <table class="table table-striped">
         <tr>
             <th>ID</th>
+            <th>Author</th>
+            <th>Category</th>
             <th>Title</th>
             <th>Content</th>
-            <th>Author</th>
             <th>Draft</th>
             <th>Created At</th>
             <th>Action</th>
@@ -16,9 +17,10 @@
         @foreach($news as $new)
             <tr>
                 <td>{{$new->id}}</td>
-                <td>{{$new->title}}</td>
-                <td>{{$new->body}}</td>
                 <td>{{$new->user->name}}</td>
+                <td>{{$new->category->name}}</td>
+                <td>{{$new->title}}</td>
+                <td>{{$new->getPreviewContentAttribute()}}</td>
                 <td>{{$new->is_draft ?'yes':'no'}}</td>
                 <td>{{$new->created_at}}</td>
                 <td>
