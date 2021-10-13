@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Service\MyLogger;
 use App\Models\News;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class FeedController extends Controller
 {
@@ -16,6 +15,7 @@ class FeedController extends Controller
             $user = Auth::user();
             $categories = $user->followingCategories;
             $news = News::whereIn("category_id", $categories->pluck('category_id'))->latest()->paginate(10);
+            MyLogger::info('Visit', 'User visited feed');
 
             return view('feed', [
                 "news" => $news

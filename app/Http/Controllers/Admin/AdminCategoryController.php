@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Service\MyLogger;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class AdminCategoryController extends Controller
      */
     public function index()
     {
+        MyLogger::info('Visit', 'User visited admin category index');
 
         return view('admin.categories.index', [
             "categories" => Category::latest()->paginate(10)
@@ -32,13 +34,14 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function store(Request $request)
     {
         Category::create([
             'name' => $request->name
         ]);
+        MyLogger::info('Store', 'User created category: ' . $request->name);
 
         return redirect()->route('admin.categories.index')->with('message', 'Successfully created.');
     }
@@ -47,11 +50,11 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Category $category
+     * @param Category $category
      */
     public function edit(Category $category)
     {
-        return view('admin.categories.edit',[
+        return view('admin.categories.edit', [
             'model' => $category
         ]);
     }
@@ -59,8 +62,8 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Category $category
+     * @param Request $request
+     * @param Category $category
      */
     public function update(Request $request, Category $category)
     {
@@ -74,12 +77,12 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Category $category
+     * @param Category $category
      */
     public function destroy(Category $category)
     {
         $category->delete();
-
+        MyLogger::info('Delete', 'User deleted category: ' . $category->name);
         return redirect()->route('admin.categories.index')->with('message', 'Successfully deleted.');
     }
 }

@@ -26,5 +26,14 @@
         @endif
     </a>
 
+
+    <a href="{{route('profile.comments')}}">
+        <button class="w-100 btn btn-lg btn-primary mt-2" type="">My Comments</button>
+    </a>
+
+    <a href="{{route('profile.activities')}}">
+        <button class="w-100 btn btn-lg btn-primary mt-2" type="">My Activities</button>
+    </a>
+
 @endsection
 

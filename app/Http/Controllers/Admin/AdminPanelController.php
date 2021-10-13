@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\News;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class AdminPanelController extends Controller
 {

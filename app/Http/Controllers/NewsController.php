@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Service\MyLogger;
 use App\Models\News;
-use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
@@ -11,7 +11,8 @@ class NewsController extends Controller
     {
 
         $new = News::with('comments.user')->findOrFail($newsId);
-        return view('news-detail',[
+        MyLogger::info('Visit', 'User visited news: ' . $new->title);
+        return view('news-detail', [
             "new" => $new
         ]);
     }

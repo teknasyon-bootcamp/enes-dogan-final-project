@@ -18,9 +18,9 @@
                     <a class="btn btn-sm btn-outline-secondary ms-1" href="{{route('profile')}}">Profile</a>
 
                     {{--todo is admin --}}
-                    @if(true)
-                        <a class="btn btn-sm btn-outline-secondary ms-1" href="{{route('admin.panel')}}">Admin Panel</a>
-                    @endif
+                    @hasanyrole('admin|moderator|editor')
+                    <a class="btn btn-sm btn-outline-secondary ms-1" href="{{route('admin.panel')}}">Admin Panel</a>
+                    @endrole
                 @endif
 
             </div>

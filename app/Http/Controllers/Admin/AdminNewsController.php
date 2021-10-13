@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Service\MyLogger;
 use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AdminNewsController extends Controller
 {
@@ -15,6 +15,8 @@ class AdminNewsController extends Controller
      */
     public function index()
     {
+        MyLogger::info('Visit', 'User visited admin news index');
+
         return view('admin.news.index', [
             "news" => News::with('user', 'category')->latest()->paginate(10)
         ]);
@@ -44,7 +46,7 @@ class AdminNewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function store(Request $request)
     {
@@ -55,6 +57,7 @@ class AdminNewsController extends Controller
             'category_id' => $request->category_id,
             'is_draft' => $request->is_draft ? true : false
         ]);
+        MyLogger::info('Store', 'User created news: ' . $request->title);
 
         return redirect()->route('admin.news.index');
     }
@@ -63,7 +66,7 @@ class AdminNewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\News $news
+     * @param News $news
      */
     public function edit(News $news)
     {
@@ -75,8 +78,8 @@ class AdminNewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\News $news
+     * @param Request $request
+     * @param News $news
      */
     public function update(Request $request, News $news)
     {
@@ -84,17 +87,20 @@ class AdminNewsController extends Controller
         $news->body = $request->body;
         $news->is_draft = $request->is_draft ? true : false;
         $news->save();
+        MyLogger::info('Update', 'User updated news: ' . $news->id);
+
         return redirect()->route('admin.news.index')->with('message', 'Successfully updated.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\News $news
+     * @param News $news
      */
     public function destroy(News $news)
     {
         $news->delete();
+        MyLogger::info('Delete', 'User deleted news: ' . $news->title);
         return redirect()->route('admin.newss.index')->with('message', 'Successfully deleted.');
     }
 }

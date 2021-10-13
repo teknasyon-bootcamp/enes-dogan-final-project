@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Service\MyLogger;
 use App\Models\Category;
 use App\Models\FollowingCategory;
 use Illuminate\Http\Request;
@@ -21,9 +22,11 @@ class FollowingCategoryController extends Controller
                     "category_id" => $categoryId,
                     "user_id" => $userId
                 ]);
+                MyLogger::info('Follow', 'User followed ' . Category::find($categoryId)->name);
             } elseif (!$isFollowed) {
                 if ($followingCategory) {
                     $followingCategory->delete();
+                    MyLogger::info('Unfollow', 'User unfollowed ' . Category::find($categoryId)->name);
                 }
             }
         }

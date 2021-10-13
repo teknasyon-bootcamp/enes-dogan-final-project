@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Service\MyLogger;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,8 @@ class AdminCommentController extends Controller
      */
     public function index()
     {
+        MyLogger::info('Visit', 'User visited admin comments index');
+
         return view('admin.comments.index', [
             "comments" => Comment::latest()->paginate(10)
         ]);
@@ -22,7 +25,7 @@ class AdminCommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Comment $comment
+     * @param Comment $comment
      */
     public function edit(Comment $comment)
     {
@@ -34,8 +37,8 @@ class AdminCommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Comment $comment
+     * @param Request $request
+     * @param Comment $comment
      */
     public function update(Request $request, Comment $comment)
     {
@@ -44,17 +47,19 @@ class AdminCommentController extends Controller
         $comment->body = $request->body;
         $comment->is_anonymous = $request->is_anonymous;
         $comment->save();
+        MyLogger::info('Update', 'User updated comment: ' . $comment->id);
         return redirect()->route('admin.comments.index')->with('message', 'Successfully updated.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Comment $comment
+     * @param Comment $comment
      */
     public function destroy(Comment $comment)
     {
         $comment->delete();
+        MyLogger::info('Delete', 'User deleted comment: ' . $comment->body);
         return redirect()->route('admin.comments.index')->with('message', 'Successfully deleted.');
     }
 }

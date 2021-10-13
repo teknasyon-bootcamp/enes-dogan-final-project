@@ -8,9 +8,9 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowingCategoryController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,22 +28,28 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [FeedController::class, 'index'])->name('feed');
 Route::get('/news/{newsId}', [NewsController::class, 'detail']);
 Route::get('/category/{category}', [CategoryController::class, 'index'])->name('category');
-Route::post('/follow', [FollowingCategoryController::class, 'follow'])->name('follow');
-Route::post('/news/{news}/comment', [CommentController::class, 'comment'])->name('comment');
 
 
 Route::get('/login', [CustomAuthController::class, 'index'])->name('login');
 Route::post('/login', [CustomAuthController::class, 'customLogin']);
 Route::get('/register', [CustomAuthController::class, 'registration'])->name('register');
 Route::post('/register', [CustomAuthController::class, 'customRegistration']);
-Route::get('/signout', [CustomAuthController::class, 'signOut'])->name('signout');
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::post('/profile/edit', [ProfileController::class, 'update']);
-Route::get('/profile/delete-request', [ProfileController::class, 'deleteRequest'])->name('profile.deleteRequest');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/signout', [CustomAuthController::class, 'signOut'])->name('signout');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/edit', [ProfileController::class, 'update']);
+    Route::get('/profile/delete-request', [ProfileController::class, 'deleteRequest'])->name('profile.deleteRequest');
+    Route::get('/profile/my-comments', [ProfileController::class, 'comments'])->name('profile.comments');
+    Route::get('/profile/my-activities', [ProfileController::class, 'activities'])->name('profile.activities');
+
+    Route::post('/follow', [FollowingCategoryController::class, 'follow'])->name('follow');
+    Route::post('/news/{news}/comment', [CommentController::class, 'comment'])->name('comment');
+});
 
 
-Route::prefix('admin')->as('admin.')->group(function () {
+Route::prefix('admin')->as('admin.')->middleware('auth')->group(function () {
 
     Route::get('/', [AdminPanelController::class, 'index'])->name('panel');
 

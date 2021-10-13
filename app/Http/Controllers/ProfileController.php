@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\Request;
+use App\Http\Service\MyLogger;
+use App\Models\ActivityLog;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -17,11 +18,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * name
-     * email
-     * password
-     */
     public function edit()
     {
         return view('profile-edit', [
@@ -35,9 +31,11 @@ class ProfileController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
-
+        MyLogger::info('Update', 'User updated profile');
         return redirect()->route('profile')->with('message', 'Profile updated');
     }
 
@@ -45,7 +43,23 @@ class ProfileController extends Controller
     {
         auth()->user()->delete_request = !auth()->user()->delete_request;
         auth()->user()->save();
-
+        MyLogger::info('Update', 'User made delete request');
         return redirect()->back();
+    }
+
+    public function comments()
+    {
+        MyLogger::info('Visit', 'User visited comments');
+        return view('profile-comments', [
+            "comments" => Comment::where('user_id', Auth::user()->id)->paginate(10)
+        ]);
+    }
+
+    public function activities()
+    {
+        MyLogger::info('Visit', 'User visited activities');
+        return view('profile-activities', [
+            "activities" => ActivityLog::where('user_id', Auth::user()->id)->latest()->paginate(10)
+        ]);
     }
 }

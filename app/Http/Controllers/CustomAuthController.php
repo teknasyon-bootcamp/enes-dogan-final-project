@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Service\MyLogger;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class CustomAuthController extends Controller
 {
@@ -27,6 +28,7 @@ class CustomAuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials, $request->remember)) {
+            MyLogger::info('Login', 'User logged in.');
             return redirect()->route('feed');
         }
 
@@ -56,12 +58,16 @@ class CustomAuthController extends Controller
             'password' => Hash::make($data['password'])
         ]);
         $user->assignRole('user');
-        Auth::setUser($user);
+        Auth::login($user);
+        MyLogger::info('Register', 'User registered.');
+
         return redirect()->route('feed');
     }
 
     public function signOut()
     {
+        MyLogger::info('Auth', 'User signed out.');
+
         Session::flush();
         Auth::logout();
 

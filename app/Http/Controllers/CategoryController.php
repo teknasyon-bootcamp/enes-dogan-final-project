@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Service\MyLogger;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index(Category $category){
-        return view('feed',[
+    public function index(Category $category)
+    {
+        MyLogger::info('Visit', 'User visited ' . $category->name . ' category.');
+
+        return view('feed', [
             "news" => $category->news()->latest()->paginate(10)
         ]);
     }

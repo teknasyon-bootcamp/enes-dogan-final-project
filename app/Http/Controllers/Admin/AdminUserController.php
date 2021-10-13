@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Service\MyLogger;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,8 @@ class AdminUserController extends Controller
      */
     public function index()
     {
+        MyLogger::info('Visit', 'User visited admin users index');
+
         return view('admin.users.index', [
             "users" => User::latest()->paginate(10)
         ]);
@@ -32,7 +35,7 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      */
     public function store(Request $request)
     {
@@ -41,6 +44,8 @@ class AdminUserController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ]);
+        MyLogger::info('Store', 'User created user: ' . $request->email);
+
         return redirect()->route('admin.users.index')->with('message', 'Successfully created.');
     }
 
@@ -48,7 +53,7 @@ class AdminUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\User $user
+     * @param User $user
      */
     public function edit(User $user)
     {
@@ -60,32 +65,38 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $user
+     * @param Request $request
+     * @param User $user
      */
     public function update(Request $request, User $user)
     {
         $user->name = $request->name;
         $user->email = $request->email;
-        if(!$request->password){
+        if ($request->password) {
             $user->password = Hash::make($request->password);
         }
+        $user->roles()->detach();
+        $user->assignRole($request->role);
         $user->save();
+
+        MyLogger::info('Update', 'User updated user: ' . $user->id);
         return redirect()->route('admin.users.index')->with('message', 'Successfully updated.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\User $user
+     * @param User $user
      */
     public function destroy(User $user)
     {
         $user->delete();
+        MyLogger::info('Delete', 'User deleted user: ' . $user->email);
         return redirect()->route('admin.users.index')->with('message', 'Successfully deleted.');
     }
 
-    public function deleteRequestedUsersList(){
+    public function deleteRequestedUsersList()
+    {
         return view('admin.users.delete-requested-users', [
             "users" => User::where('delete_request', true)->paginate(10)
         ]);
